@@ -15,6 +15,7 @@ from .routes import router
 
 from speasy.products.variable import SpeasyVariable
 from speasy.products.variable import to_dictionary
+from speasy.core.cdf.cdf_writer import save_variables
 
 from speasy_proxy.api import pickle_data
 from .query_parameters import QueryZstd, QueryPickleProto, QueryDataFormat
@@ -116,6 +117,9 @@ def encode_output(var, path: str, start_time: str, stop_time: str, format: str, 
         output_format = format
         if output_format == "python_dict":
             data = to_dictionary(var)
+        elif output_format == "cdf":
+            data = save_variables([var])
+            return bytes(data), "application/cdf"
         elif output_format == 'speasy_variable':
             data = var
         elif output_format == 'html_bokeh':
