@@ -31,7 +31,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-dependencies = ['apscheduler < 4.0.0', 'humanize', 'speasy@git+https://github.com/SciQLop/speasy.git', 'pycdfpp>=0.7.3', 'diskcache', 'jinja2', 'pyzstd', 'bokeh>=3.0.0', 'matplotlib', 'fastapi[all]']
+dependencies = ['apscheduler < 4.0.0', 'humanize', 'speasy@git+https://github.com/brenard-irap/speasy.git#egg=fix-cdf-write-ptr-attributes', 'pycdfpp>=0.7.3', 'diskcache', 'jinja2', 'pyzstd', 'bokeh>=3.0.0', 'matplotlib', 'fastapi[all]']
 [project.urls]
 homepage = "https://github.com/SciQLop/speasy_proxy"
 

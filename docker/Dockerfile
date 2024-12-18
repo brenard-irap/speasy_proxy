@@ -33,7 +33,7 @@ WORKDIR /home/speasy
 RUN cd speasy_proxy &&\
     python3 -m ensurepip &&\
     python3 -mpip install -U pip &&\
-    python3 -mpip install -U git+https://github.com/SciQLop/speasy.git ddt gunicorn &&\
+    python3 -mpip install -U git+https://github.com/brenard-irap/speasy.git@fix-cdf-write-ptr-attributes ddt gunicorn &&\
     python3 -mpip install -U .
 
 

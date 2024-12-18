@@ -13,7 +13,7 @@ from starlette.concurrency import run_in_threadpool
 
 from .routes import router
 
-from speasy.products.variable import SpeasyVariable
+from speasy.products.variable import SpeasyVariable, VariableTimeAxis, DataContainer
 from speasy.products.variable import to_dictionary
 from speasy.core.codecs import get_codec
 
@@ -113,6 +113,10 @@ async def get_data(request: Request, background_tasks: BackgroundTasks, path: st
 def encode_output(var, path: str, start_time: str, stop_time: str, format: str, request: Request,
                   pickle_proto: int = 3):
     data = None
+    if var is None and format == "cdf":
+        var = SpeasyVariable(axes=[VariableTimeAxis(values=np.array([], dtype='datetime64[ns]'), meta={})], 
+                             values=DataContainer(values=np.array([]), meta={}, name="Unknown"))
+
     if var is not None:
         output_format = format
         if output_format == "python_dict":
