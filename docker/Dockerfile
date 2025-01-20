@@ -2,6 +2,8 @@ FROM fedora:40
 
 ARG PORT=6543
 ARG SPEASY=speasy
+ARG GITLAB_USER
+ARG GITLAB_PWD
 
 ENV SPEASY_CACHE_PATH=/data \
     SPEASY_CACHE_SIZE="20e9" \
@@ -25,6 +27,7 @@ RUN useradd speasy && mkdir -p $SPEASY_CACHE_PATH $SPEASY_INDEX_PATH \
 
 COPY *.cfg *.yaml *.toml *.txt *.md /home/speasy/speasy_proxy/
 COPY speasy_proxy /home/speasy/speasy_proxy/speasy_proxy
+
 RUN chown -R speasy /home/speasy/speasy_proxy
 
 USER speasy
@@ -33,9 +36,13 @@ WORKDIR /home/speasy
 RUN cd speasy_proxy &&\
     python3 -m ensurepip &&\
     python3 -mpip install -U pip &&\
-    python3 -mpip install -U git+https://github.com/brenard-irap/speasy.git@fix-cdf-write-ptr-attributes ddt gunicorn &&\
+    python3 -mpip install -U git+https://github.com/brenard-irap/speasy.git@test-model-shannon ddt gunicorn &&\
     python3 -mpip install -U .
+RUN python3 -mpip install -U git+https://$GITLAB_USER:$GITLAB_PWD@gitlab.irap.omp.eu/brenard/flux_model.git
 
+
+RUN mkdir -p /home/speasy/.config/speasy/extra &&\
+    cp /home/speasy/.local/lib/python3.12/site-packages/flux_model/resources/flux_model.yaml /home/speasy/.config/speasy/extra/
 
 ADD docker/entry_point.sh /home/speasy/entry_point.sh
 
